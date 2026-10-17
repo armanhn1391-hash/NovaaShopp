@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101828">
+<title>نواشاپ | فروشگاه اینترنتی</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#f5f7fb;color:#182230}
+header{background:#101828;color:white;padding:18px 5%;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.logo{font-size:27px;font-weight:bold}
+.logo span{color:#a5a0ff}
+header small{color:#d0d5dd}
+main{max-width:1100px;margin:auto;padding:18px}
+.hero{background:linear-gradient(120deg,#24205c,#635bff);color:white;border-radius:22px;padding:26px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.hero h1{font-size:clamp(25px,5vw,40px);line-height:1.6;margin:0}
+.hero p{line-height:2}
+.hero-art{font-size:70px}
+.primary{background:white;color:#5148e5;border:0;border-radius:11px;padding:12px 17px;font-weight:bold}
+input,select,button{font:inherit}
+button{cursor:pointer}
+#search{width:100%;padding:14px;border:1px solid #e2e5ec;border-radius:12px;margin-top:20px;outline-color:#635bff}
+.categories{display:flex;gap:8px;overflow-x:auto;margin:15px 0;padding-bottom:4px}
+.chip{border:1px solid #e7eaf0;border-radius:22px;padding:10px 15px;background:white;white-space:nowrap}
+.chip.active{background:#635bff;color:white;border-color:#635bff}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:18px 0}
+select{padding:10px;border:1px solid #ddd;border-radius:10px;background:white;max-width:100%}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+.card{background:white;border:1px solid #e7eaf0;border-radius:15px;overflow:hidden;transition:.2s}
+.card:hover{transform:translateY(-3px);box-shadow:0 8px 20px #10182815}
+.photo{height:145px;background:#eeedff;display:grid;place-items:center;font-size:55px;position:relative}
+.discount{position:absolute;right:8px;top:8px;background:#fee4e2;color:#b42318;border-radius:7px;padding:5px;font-size:11px}
+.heart{position:absolute;left:8px;top:8px;border:0;border-radius:50%;background:white;width:34px;height:34px;font-size:18px}
+.info{padding:12px}
+.info h3{font-size:14px;line-height:1.8;min-height:45px;margin:7px 0}
+.muted{font-size:12px;color:#667085}
+.price{font-weight:bold;color:#5148e5;margin-top:9px;line-height:2}
+.old{color:#999;text-decoration:line-through;font-size:11px;margin-right:5px}
+.add{width:100%;border:0;border-radius:9px;padding:11px;background:#635bff;color:white;margin-top:12px}
+.empty{grid-column:1/-1;background:white;border-radius:15px;text-align:center;padding:30px;line-height:2}
+.benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:28px}
+.benefit{background:white;padding:17px;border-radius:14px;border:1px solid #e7eaf0;line-height:2}
+.benefit span{display:block;font-size:12px;color:#667085}
+footer{text-align:center;padding:30px 15px;color:#667085;font-size:12px;line-height:2}
+#cartButton{position:fixed;bottom:16px;left:16px;background:#101828;color:white;border:0;border-radius:14px;padding:14px 18px;z-index:5;box-shadow:0 5px 20px #10182830}
+.count{background:#635bff;border-radius:8px;padding:3px 7px}
+#overlay{display:none;position:fixed;inset:0;background:#10182888;z-index:10}
+#overlay.show{display:block}
+.drawer{position:absolute;left:0;top:0;bottom:0;width:min(430px,100%);background:white;padding:20px;overflow:auto}
+.drawerhead{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.close{border:0;background:#f2f4f7;border-radius:9px;padding:9px}
+.cartitem{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid #eee}
+.cartemoji{font-size:30px;background:#f2f4f7;padding:8px;border-radius:10px;align-self:flex-start}
+.cartdetail{flex:1;line-height:2;font-size:13px;min-width:0}
+.qty{display:flex;align-items:center;gap:10px;margin-top:5px}
+.qty button{border:1px solid #ddd;background:white;border-radius:7px;padding:4px 10px}
+.remove{border:0;background:none;color:#d92d20;padding:5px 0}
+.total{display:flex;justify-content:space-between;font-weight:bold;margin:20px 0;gap:10px}
+.checkout{width:100%;padding:13px;background:#635bff;color:white;border:0;border-radius:11px}
+#toast{display:none;position:fixed;bottom:78px;right:50%;transform:translateX(50%);background:#101828;color:white;padding:12px 18px;border-radius:10px;z-index:20;max-width:90%;text-align:center}
+@media(max-width:850px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:600px){main{padding:12px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.photo{height:125px}.hero{padding:20px}.hero-art{font-size:48px}.benefits{grid-template-columns:1fr}.info{padding:10px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo">نوا<span>شاپ</span> ✨</div>
+  <small>خریدی متفاوت، آسان و هوشمند</small>
+</header>
+
+<main>
+  <section class="hero">
+    <div>
+      <h1>انتخاب‌های بهتر،<br>خرید هوشمندتر</h1>
+      <p>محصولات جذاب را کشف کن و از خریدت لذت ببر.</p>
+      <button class="primary" onclick="document.getElementById('productsTitle').scrollIntoView({behavior:'smooth'})">مشاهده محصولات ←</button>
+    </div>
+    <div class="hero-art">🛍️</div>
+  </section>
+
+  <input id="search" type="search" placeholder="🔎 جست‌وجوی محصول..." autocomplete="off">
+
+  <div class="categories" id="categories"></div>
+
+  <section>
+    <div class="toolbar">
+      <h2 id="productsTitle">محصولات فروشگاه</h2>
+      <select id="sort">
+        <option value="popular">محبوب‌ترین</option>
+        <option value="cheap">ارزان‌ترین</option>
+        <option value="expensive">گران‌ترین</option>
+        <option value="discount">بیشترین تخفیف</option>
+      </select>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+    <section class="benefits">
+    <div class="benefit">🚚 ارسال آسان<span>نمایش نمونه‌ای از خدمات ارسال</span></div>
+    <div class="benefit">🔒 خرید امن<span>طراحی نمایشی؛ پرداخت واقعی فعال نیست</span></div>
+    <div class="benefit">💬 پشتیبانی مشتریان<span>تجربه خرید ساده و راحت</span></div>
+  </section>
+</main>
+
+<footer>
+  <strong>نواشاپ ✨</strong><br>
+  فروشگاه اینترنتی مدرن برای انتخاب‌های بهتر<br>
+  © ۲۰۲۶ NovaShop — نسخه نمایشی
+</footer>
+
+<button id="cartButton" onclick="openCart()">
+  🛒 سبد خرید <span class="count" id="cartCount">۰</span>
+</button>
+
+<div id="overlay" onclick="if(event.target===this)closeCart()">
+  <div class="drawer">
+    <div class="drawerhead">
+      <h2>🛒 سبد خرید</h2>
+      <button class="close" onclick="closeCart()">✕ بستن</button>
+    </div>
+    <div id="cartItems"></div>
+    <div class="total">
+      <span>مبلغ کل:</span>
+      <span id="cartTotal">۰ تومان</span>
+    </div>
+    <button class="checkout" onclick="checkout()">ادامه و ثبت سفارش</button>
+    <p class="muted">این فروشگاه نمایشی است؛ سفارش و پرداخت واقعی انجام نمی‌شود.</p>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const products = [
+ {id:1,name:"هدفون بی‌سیم",cat:"دیجیتال",price:1250000,old:1600000,emoji:"🎧",rating:4.8,sales:98},
+ {id:2,name:"ساعت هوشمند",cat:"دیجیتال",price:1850000,old:2200000,emoji:"⌚",rating:4.7,sales:87},
+ {id:3,name:"اسپیکر قابل حمل",cat:"دیجیتال",price:980000,old:1200000,emoji:"🔊",rating:4.5,sales:65},
+ {id:4,name:"کیف روزمره",cat:"مد و پوشاک",price:790000,old:950000,emoji:"👜",rating:4.6,sales:74},
+ {id:5,name:"کفش ورزشی",cat:"مد و پوشاک",price:2100000,old:2500000,emoji:"👟",rating:4.8,sales:91},
+ {id:6,name:"عینک آفتابی",cat:"مد و پوشاک",price:450000,old:600000,emoji:"🕶️",rating:4.4,sales:58},
+ {id:7,name:"چراغ مطالعه",cat:"خانه",price:620000,old:750000,emoji:"💡",rating:4.5,sales:62},
+ {id:8,name:"ماگ سرامیکی",cat:"خانه",price:220000,old:300000,emoji:"☕",rating:4.3,sales:49},
+ {id:9,name:"کوله‌پشتی",cat:"مد و پوشاک",price:1150000,old:1450000,emoji:"🎒",rating:4.7,sales:81},
+ {id:10,name:"توپ فوتبال",cat:"ورزش",price:680000,old:800000,emoji:"⚽",rating:4.9,sales:96},
+ {id:11,name:"دمبل ورزشی",cat:"ورزش",price:890000,old:1050000,emoji:"🏋️",rating:4.5,sales:53},
+ {id:12,name:"گلدان دکوراتیو",cat:"خانه",price:350000,old:420000,emoji:"🪴",rating:4.4,sales:42},
+ {id:13,name:"قاب گوشی",cat:"دیجیتال",price:180000,old:250000,emoji:"📱",rating:4.2,sales:72},
+ {id:14,name:"دوربین عکاسی",cat:"دیجیتال",price:8500000,old:9500000,emoji:"📷",rating:4.9,sales:38},
+ {id:15,name:"کتاب داستان",cat:"کتاب",price:160000,old:200000,emoji:"📚",rating:4.6,sales:45},
+ {id:16,name:"دفتر یادداشت",cat:"کتاب",price:95000,old:120000,emoji:"📒",rating:4.3,sales:35}
+];
+
+const categories = ["همه","دیجیتال","مد و پوشاک","خانه","ورزش","کتاب"];
+let activeCategory = "همه";
+let favorites = JSON.parse(localStorage.getItem("nova_favorites") || "[]");
+let cart = JSON.parse(localStorage.getItem("nova_cart") || "{}");
+let searchText = "";
+let toastTimer;
+
+function money(value){
+  return Number(value).toLocaleString("fa-IR") + " تومان";
+}
+
+function discountOf(product){
+  return Math.round((1-product.price/product.old)*100);
+}
+
+function saveData(){
+  localStorage.setItem("nova_cart",JSON.stringify(cart));
+  localStorage.setItem("nova_favorites",JSON.stringify(favorites));
+}
+
+function showToast(message){
+  const toast = document.getElementById("toast");
+  toast.textContent = message;
+  toast.style.display = "block";
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>toast.style.display="none",2200);
+}
+
+function renderCategories(){
+  const box = document.getElementById("categories");
+  box.innerHTML = categories.map(cat => `
+    <button class="chip ${cat===activeCategory?"active":""}"
+      onclick="setCategory('${cat}')">${cat}</button>
+  `).join("");
+}
+  function setCategory(cat){
+  activeCategory = cat;
+  renderCategories();
+  renderProducts();
+}
+
+function renderProducts(){
+  const grid = document.getElementById("grid");
+  const sort = document.getElementById("sort").value;
+
+  let list = products.filter(p => {
+    const categoryMatch = activeCategory==="همه" || p.cat===activeCategory;
+    const searchMatch = (p.name+" "+p.cat).toLowerCase().includes(searchText.toLowerCase());
+    return categoryMatch && searchMatch;
+  });
+
+  if(sort==="cheap") list.sort((a,b)=>a.price-b.price);
+  if(sort==="expensive") list.sort((a,b)=>b.price-a.price);
+  if(sort==="discount") list.sort((a,b)=>discountOf(b)-discountOf(a));
+  if(sort==="popular") list.sort((a,b)=>b.sales-a.sales);
+
+  document.getElementById("productsTitle").textContent =
+    searchText ? "نتایج جست‌وجو" :
+    activeCategory==="همه" ? "محصولات فروشگاه" : activeCategory;
+
+  if(!list.length){
+    grid.innerHTML='<div class="empty">😕 محصولی پیدا نشد.<br>عبارت دیگری را جست‌وجو کن.</div>';
+    return;
+  }
+
+  grid.innerHTML = list.map(p => `
+    <article class="card">
+      <div class="photo">
+        ${p.emoji}
+        <span class="discount">${discountOf(p)}٪ تخفیف</span>
+        <button class="heart" aria-label="علاقه‌مندی"
+          onclick="toggleFavorite(${p.id})">${favorites.includes(p.id)?"❤️":"🤍"}</button>
+      </div>
+      <div class="info">
+        <div class="muted">${p.cat} · ⭐ ${p.rating}</div>
+        <h3>${p.name}</h3>
+        <div class="price">
+          ${money(p.price)}
+          <span class="old">${p.old.toLocaleString("fa-IR")}</span>
+        </div>
+        <button class="add" onclick="addToCart(${p.id})">افزودن به سبد خرید +</button>
+      </div>
+    </article>
+  `).join("");
+}
+
+function toggleFavorite(id){
+  if(favorites.includes(id)){
+    favorites = favorites.filter(item=>item!==id);
+    showToast("از علاقه‌مندی‌ها حذف شد");
+  }else{
+    favorites.push(id);
+    showToast("❤️ به علاقه‌مندی‌ها اضافه شد");
+  }
+  saveData();
+  renderProducts();
+}
+
+function addToCart(id){
+  cart[id] = (Number(cart[id]) || 0) + 1;
+  saveData();
+  updateCartCount();
+  showToast("✅ به سبد خرید اضافه شد");
+}
+
+function updateCartCount(){
+  const count = Object.values(cart).reduce((sum,qty)=>sum+Number(qty),0);
+  document.getElementById("cartCount").textContent = count.toLocaleString("fa-IR");
+}
+
+function openCart(){
+  document.getElementById("overlay").classList.add("show");
+  renderCart();
+}
+
+function closeCart(){
+  document.getElementById("overlay").classList.remove("show");
+}
+
+function changeQty(id,amount){
+  const next = (Number(cart[id]) || 0) + amount;
+  if(next<=0){
+    delete cart[id];
+  }else{
+    cart[id] = next;
+  }
+  saveData();
+  renderCart();
+  updateCartCount();
+}
+
+function removeFromCart(id){
+  delete cart[id];
+  saveData();
+  renderCart();
+  updateCartCount();
+  showToast("محصول از سبد خرید حذف شد");
+}
+
+function renderCart(){
+  const box = document.getElementById("cartItems");
+  const entries = Object.entries(cart).filter(([id,qty])=>
+    products.some(p=>p.id===Number(id)) && Number(qty)>0
+  );
+
+  if(!entries.length){
+    box.innerHTML='<div class="empty">🛒<br>سبد خریدت خالی است.<br>یک محصول جذاب انتخاب کن!</div>';
+    document.getElementById("cartTotal").textContent=money(0);
+    return;
+  }
+
+  let total = 0;
+
+  box.innerHTML = entries.map(([id,qty])=>{
+    const p = products.find(item=>item.id===Number(id));
+    const quantity = Number(qty);
+    total += p.price*quantity;
+
+    return `
+      <div class="cartitem">
+        <div class="cartemoji">${p.emoji}</div>
+        <div class="cartdetail">
+          <strong>${p.name}</strong><br>
+          ${money(p.price)}
+          <div class="qty">
+            <button onclick="changeQty(${p.id},1)">+</button>
+            <span>${quantity.toLocaleString("fa-IR")}</span>
+            <button onclick="changeQty(${p.id},-1)">−</button>
+          </div>
+          <button class="remove" onclick="removeFromCart(${p.id})">حذف محصول</button>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  document.getElementById("cartTotal").textContent=money(total);
+}
+
+function checkout(){
+  const count = Object.values(cart).reduce((sum,qty)=>sum+Number(qty),0);
+
+  if(count===0){
+    showToast("ابتدا محصولی به سبد خرید اضافه کن");
+    return;
+  }
+
+  showToast("این نسخه نمایشی است؛ پرداخت واقعی فعال نیست.");
+                           }
+  document.getElementById("search").addEventListener("input",function(){
+  searchText = this.value.trim();
+  renderProducts();
+});
+
+document.getElementById("sort").addEventListener("change",renderProducts);
+
+document.addEventListener("keydown",function(event){
+  if(event.key==="Escape") closeCart();
+});
+
+renderCategories();
+renderProducts();
+updateCartCount();
+</script>
+</body>
+</html>
